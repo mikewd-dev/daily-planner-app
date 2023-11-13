@@ -1,5 +1,4 @@
 var todayDate = dayjs();
-
 //display the current date
 var currentDay = $("#currentDay").text(todayDate.format('DD/MM/YYYY'));
 var currentTime =todayDate.format("HH")
@@ -11,7 +10,9 @@ var diaryTimes = $("#diarytime");
 var diaryEntries = $("#diaryentries");
 var diarySave = $("#diarysave");
 
-var times = ["9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm"];
+var setTimes = ["9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm"];
+
+var times = [9, 10, 11, 12, 13, 14, 15, 16, 17];
 
 var save = ["💾", "💾", "💾", "💾", "💾", "💾", "💾", "💾", "💾"];
 
@@ -21,7 +22,7 @@ for (var i = 0; i < times.length; i++) {
     var timeBlock = $('<div>');
     timeBlock.addClass("col-2 time-block hour");
     timeBlock.attr('data-time', times[i]);
-    timeBlock.text(times[i]);
+    timeBlock.text(setTimes[i]);
 
     var diaryBlock = $('<div>');
     diaryBlock.addClass("col-8 past row");
@@ -63,23 +64,23 @@ for (var i = 0; i < times.length; i++) {
 }
 
 // set color based on past present and future time
-function colorTime() {
-    // Iterate over time blocks and apply background color
-    $(".time-block").each(function () {
-      var blockTimes = parseInt($(this).attr("data-time").replace("am", ""));
-      var currentTimeInt = parseInt(currentTime);
+function colorFuture() {
+  // Iterate over time blocks and apply background color
+  $(".time-block").each(function () {
+    var blockTime = parseInt($(this).attr("data-time"));
+    var currentTimeInt = parseInt(currentTime);
 
-      if (currentTimeInt < blockTimes) {
-        // Set background color for future time blocks
-        $(this).siblings(".row").children(".description").css("backgroundColor", '#77dd77');
-      } else if (currentTimeInt === blockTimes) {
-        // Set background color for current time block
-        $(this).siblings(".row").children(".description").css("backgroundColor", '#ff6961');
-      } else {
-        // Set background color for past time blocks
-        $(this).siblings(".row").children(".description").css("backgroundColor", '#d3d3d3');
-      }
-    });
-  }
+    if (currentTimeInt < blockTime) {
+      // Set background color for future time blocks
+      $(this).siblings(".row").children(".description").css("backgroundColor", '#77dd77');
+    } else if (currentTimeInt === blockTime) {
+      // Set background color for current time block
+      $(this).siblings(".row").children(".description").css("backgroundColor", '#ff6961');
+    } else {
+      // Set background color for past time blocks
+      $(this).siblings(".row").children(".description").css("backgroundColor", '#d3d3d3');
+    }
+  });
+}
 
-  colorTime();
+colorFuture();
