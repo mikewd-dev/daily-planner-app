@@ -1,7 +1,9 @@
 var todayDate = dayjs();
+
+//display the current date
 var currentDay = $("#currentDay").text(todayDate.format('DD/MM/YYYY'));
 var currentTime =todayDate.format("HH")
-var time = 0;
+
 
 
 
@@ -27,8 +29,8 @@ for (var i = 0; i < times.length; i++) {
     var diaryArea = $('<textarea>');
     diaryArea.addClass("description");
 
-    // Load data from localStorage on document ready
-    var key = 'diarySave_' + i;
+    // Load data from localStorage
+    var key = 'diarySaved' + i;
     var savedData = localStorage.getItem(key);
 
     if (savedData !== null) {
@@ -38,6 +40,7 @@ for (var i = 0; i < times.length; i++) {
 
     var saveBlock = $('<button>');
     saveBlock.addClass("col-2 saveBtn saveBtn:hover");
+    saveBlock.css('backgroundColor', '#06aed5')
     saveBlock.text(save[i]);
 
     // Append elements to the DOM
@@ -46,11 +49,11 @@ for (var i = 0; i < times.length; i++) {
     diaryEntries.append(row);
     diarySave.append(row);
 
-    // Save button click event
+    // Save diary entries with save buttons
     (function (diaryArea, i) {
         saveBlock.on('click', function (e) {
             e.stopPropagation();
-            var key = 'diarySave_' + i;
+            var key = 'diarySaved' + i;
             var value = diaryArea.val();
             localStorage.setItem(key, value);
         });
@@ -59,57 +62,24 @@ for (var i = 0; i < times.length; i++) {
 
 }
 
-
-function colorPresent(){
-
-if(currentTime && currentTime < (dayjs('18:00', {hour:18, minute:0}))){
-    diaryArea.css('backgroundColor', 'orange')
-} else {
-diaryArea.css('backgroundColor', '');
-}
-}
-colorPresent();
-
-// function colorFuture() {
-//     // Iterate over time blocks and apply background color
-//     $(".time-block").each(function () {
-//       var blockTime = parseInt($(this).attr("data-time").replace("am", ""));
-//       if (currentTime < blockTime) {
-//         // Set background color to blue for future time blocks
-//         $(this).siblings(".row").children(".description").css("backgroundColor", 'blue');
-//       } else if (currentTime === blockTime) {
-//         // Set background color to grey for the current time block
-//         $(this).siblings(".row").children(".description").css("backgroundColor", 'grey');
-//       } else {
-//         // Remove background color for past time blocks
-//         $(this).siblings(".row").children(".description").css("backgroundColor", "");
-//       }
-//     });
-//   }
-
-//   colorFuture();
-
-  function colorFuture() {
+// set color based on past present and future time
+function colorTime() {
     // Iterate over time blocks and apply background color
     $(".time-block").each(function () {
-      var blockTime = parseInt($(this).attr("data-time").replace("am", ""));
+      var blockTimes = parseInt($(this).attr("data-time").replace("am", ""));
       var currentTimeInt = parseInt(currentTime);
 
-      if (currentTimeInt < blockTime) {
-        // Set background color to blue for future time blocks
+      if (currentTimeInt < blockTimes) {
+        // Set background color for future time blocks
         $(this).siblings(".row").children(".description").css("backgroundColor", '#77dd77');
-      } else if (currentTimeInt === blockTime) {
-        // Set background color to grey for the current time block
+      } else if (currentTimeInt === blockTimes) {
+        // Set background color for current time block
         $(this).siblings(".row").children(".description").css("backgroundColor", '#ff6961');
       } else {
-        // Remove background color for past time blocks
+        // Set background color for past time blocks
         $(this).siblings(".row").children(".description").css("backgroundColor", '#d3d3d3');
       }
     });
   }
 
-  colorFuture();
-
-
-
-// if(currentTime > time)
+  colorTime();
